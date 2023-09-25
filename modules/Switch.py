@@ -1,23 +1,72 @@
-class LoRASwitch:
+class MPNSwitch:
     @classmethod
     def INPUT_TYPES(s):
         return {"required": {
                     "active": ("BOOLEAN", {"default": False, "label_on": "ON", "label_off": "OFF", "forceInput": False}),
                     "model1": ("MODEL",),
-                    "condition1": ("CONDITIONING",),
+                    "positive1": ("CONDITIONING",),
+                    "negative1": ("CONDITIONING",),
                     "model2": ("MODEL",),
-                    "condition2": ("CONDITIONING",),
+                    "positive2": ("CONDITIONING",),
+                    "negative2": ("CONDITIONING",),
                     },
-                "hidden": {"unique_id": "UNIQUE_ID"},
+                "hidden": {"uid": "UNIQUE_ID"},
                 }
+    
 
-    RETURN_TYPES = ("MODEL", "CONDITIONING")
+    RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING")
+    RETURN_NAMES = ("model", "positive", "negative")
     FUNCTION = "doit"
 
     CATEGORY = "TGu_util"
 
-    def doit(self, active, model1, condition1, model2, condition2, unique_id):
+    def doit(self, active, model1, model2, positive1, positive2, negative1, negative2, uid):
         if active:
-            return (model2, condition2)
+            return (model2, positive2, negative2)
         else:
-            return (model1, condition1)
+            return (model1, positive1, negative1)
+        
+class MPNReroute:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {"required": {
+                    "model": ("MODEL",),
+                    "positive": ("CONDITIONING",),
+                    "negative": ("CONDITIONING",),
+                    },
+                "hidden": {"uid": "UNIQUE_ID"},
+                }
+    
+    RETURN_TYPES = ("MODEL", "CONDITIONING", "CONDITIONING")
+    RETURN_NAMES = ("model", "positive", "negative")
+    FUNCTION = "doit"
+
+    CATEGORY = "TGu_util"
+    def doit(self, model, positive, negative, uid):
+        return (model, positive, negative)
+    
+class PNSwitch:
+    @classmethod
+    def INPUT_TYPES(s):
+        return {"required": {
+                    "active": ("BOOLEAN", {"default": False, "label_on": "ON", "label_off": "OFF", "forceInput": False}),
+                    "positive1": ("CONDITIONING",),
+                    "negative1": ("CONDITIONING",),
+                    "positive2": ("CONDITIONING",),
+                    "negative2": ("CONDITIONING",),
+                    },
+                "hidden": {"uid": "UNIQUE_ID"},
+                }
+    
+
+    RETURN_TYPES = ("CONDITIONING", "CONDITIONING")
+    RETURN_NAMES = ("positive", "negative")
+    FUNCTION = "doit"
+
+    CATEGORY = "TGu_util"
+
+    def doit(self, active, positive1, positive2, negative1, negative2, uid):
+        if active:
+            return (positive2, negative2)
+        else:
+            return (positive1, negative1)

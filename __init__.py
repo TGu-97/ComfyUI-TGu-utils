@@ -10,9 +10,13 @@ sys.path.append(modules_path)
 from Switch import *
 
 NODE_CLASS_MAPPINGS = {
-    "LoRASwitch": LoRASwitch
+    "MPNSwitch": MPNSwitch,
+    "MPNReroute": MPNReroute,
+    "PNSwitch": PNSwitch,
 }
         
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "LoRASwitch": "LoRA Switch"
+    "MPNSwitch": "MPN Switch",
+    "MPNReroute": "MPN Reroute",
+    "PNSwitch": "PN Switch",
 }
